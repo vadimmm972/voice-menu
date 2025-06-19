@@ -3,18 +3,19 @@
     <img alt="Vue logo" src="./assets/logo.png">
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
      <!-- <Version2 /> -->
-     <VoiceRecorder />
+     <VoiceRecorderWithAssembly />
   </div>
 </template>
 
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
 //import Version2 from './components/Version2.vue'
-import VoiceRecorder from './views/VoiceRecorder.vue';
+//import VoiceRecorder from './views/VoiceRecorder.vue';
+import VoiceRecorderWithAssembly from './views/VoiceRecorderWithAssembly.vue';
 export default {
   name: 'App',
   components: {
-    VoiceRecorder
+    VoiceRecorderWithAssembly
   }
 }
 </script>
