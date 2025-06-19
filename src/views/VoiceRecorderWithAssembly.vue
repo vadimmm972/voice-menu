@@ -1,9 +1,22 @@
 <template>
   <div>
-    <button @click="startRecording" :disabled="recording || isTranscribing">🎤 Start recording</button>
-    <br />
-    <br />
-    <button @click="stopRecording" :disabled="!recording || isTranscribing">■ Stop</button>
+<div class="voice-controls">
+  <button
+    @click="startRecording"
+    :disabled="recording || isTranscribing"
+    :class="['btn-record', { active: recording }]"
+  >
+    <span class="icon-mic"></span> Start recording
+  </button>
+      <br />    <br />
+  <button
+    @click="stopRecording"
+    :disabled="!recording || isTranscribing"
+    :class="['btn-stop', { active: recording }]"
+  >
+    <span class="icon-stop"></span> Stop
+  </button>
+</div>
     <br />
     <audio v-if="audioUrl" :src="audioUrl" controls></audio>
     <br />
@@ -188,4 +201,68 @@ export default {
   font-weight: 400;
   margin-left: 2px;
 }
+
+.voice-controls {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  margin-bottom: 22px;
+}
+
+.voice-controls button {
+  border: none;
+  border-radius: 12px;
+  padding: 17px 34px 15px 26px;
+  font-size: 1.22em;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-weight: 600;
+  box-shadow: 0 2px 9px 0 rgba(50,80,140,.07);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.18s;
+  outline: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-record {
+  background: #f2f7fc;
+  color: #187842;
+}
+
+.btn-record.active {
+  background: #20cb6c;
+  color: #fff;
+  box-shadow: 0 0 0 2px #28d07b30;
+}
+
+.btn-stop {
+  background: #f2f3f5;
+  color: #ba2828;
+}
+
+.btn-stop.active {
+  background: #df3d2f;
+  color: #fff;
+  box-shadow: 0 0 0 2px #e2483040;
+}
+
+.voice-controls button:disabled {
+  background: #e6e6e6 !important;
+  color: #b6b6b6 !important;
+  box-shadow: none;
+  cursor: default;
+  opacity: 0.76;
+}
+
+.icon-mic::before {
+  content: '🎤';
+  font-size: 1.25em;
+}
+.icon-stop::before {
+  content: '■';
+  font-size: 1.35em;
+  color: inherit;
+}
+
 </style>
