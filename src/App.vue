@@ -3,18 +3,18 @@
     <img alt="Vue logo" src="./assets/logo.png">
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
      <!-- <Version2 /> -->
-     <Version2 />
+     <VoiceRecorder />
   </div>
 </template>
 
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
-import Version2 from './components/Version2.vue'
-//import VoiceRecorder from './views/VoiceRecorder.vue';
+//import Version2 from './components/Version2.vue'
+import VoiceRecorder from './views/VoiceRecorder.vue';
 export default {
   name: 'App',
   components: {
-    Version2
+    VoiceRecorder
   }
 }
 </script>
