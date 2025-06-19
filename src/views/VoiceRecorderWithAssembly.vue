@@ -1,12 +1,23 @@
 <template>
   <div>
-    <button @click="startRecording" :disabled="recording">🎤 Start recording</button>
-    <button @click="stopRecording" :disabled="!recording">■ Stop</button>
+    <button @click="startRecording" :disabled="recording || isTranscribing">🎤 Start recording</button>
+    <br />
+    <br />
+    <button @click="stopRecording" :disabled="!recording || isTranscribing">■ Stop</button>
+    <br />
     <audio v-if="audioUrl" :src="audioUrl" controls></audio>
-    <div v-if="recognizedText" style="margin-top: 15px; color: green;">
+    <br />
+    <div v-if="isTranscribing" style="margin:15px 0; color:#2d7fff">
+      <span class="loader"></span> Processing audio, please wait...
+    </div>
+    <br />
+    <br />
+    <div v-if="recognizedText && !isTranscribing" style="margin-top: 15px; color: green;">
       <b>Recognized text:</b><br>
       {{ recognizedText }}
     </div>
+    <br />
+    <br />
     <div v-if="error" style="color: red; margin-top: 10px">{{ error }}</div>
   </div>
 </template>
@@ -21,7 +32,8 @@ export default {
       audioBlob: null,
       audioUrl: '',
       recognizedText: '',
-      error: ''
+      error: '',
+      isTranscribing: false
     }
   },
   methods: {
@@ -71,6 +83,7 @@ export default {
     },
     async recognizeAudio() {
       const apiKey = '84dd127a0c52476b8bb4648024f94923';
+      this.isTranscribing = true;
       try {
         // 1. Upload audio
         const uploadRes = await fetch('https://api.assemblyai.com/v2/upload', {
@@ -118,8 +131,28 @@ export default {
         }
       } catch (err) {
         this.error = "Recognition failed: " + err.message;
+      } finally {
+        this.isTranscribing = false;
       }
     }
   }
 }
 </script>
+
+<style>
+.loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #2d7fff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  animation: spin 0.8s linear infinite;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+</style>
