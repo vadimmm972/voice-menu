@@ -37,6 +37,12 @@
       <span class="size-item">{{ (audioBlob.size / 1024).toFixed(1) }} <span class="size-label">KB</span></span> /
       <span class="size-item">{{ (audioBlob.size / 1024 / 1024).toFixed(2) }} <span class="size-label">MB</span></span>
     </div>
+    <div v-if="apiResponseSize > 0" class="api-response-size-box">
+      <b>API response size:</b>
+      <span class="size-item">{{ apiResponseSize }} <span class="size-label">bytes</span></span> /
+      <span class="size-item">{{ (apiResponseSize / 1024).toFixed(1) }} <span class="size-label">KB</span></span> /
+      <span class="size-item">{{ (apiResponseSize / 1024 / 1024).toFixed(2) }} <span class="size-label">MB</span></span>
+    </div>
     <div v-if="error" style="color: red; margin-top: 10px">{{ error }}</div>
   </div>
 </template>
@@ -52,11 +58,13 @@ export default {
       audioUrl: '',
       recognizedText: '',
       error: '',
-      isTranscribing: false
+      isTranscribing: false,
+      apiResponseSize: 0
     }
   },
   methods: {
     startRecording() {
+      this.apiResponseSize = 0;
       this.audioBlob = null;
       this.error = '';
       this.audioUrl = '';
@@ -134,6 +142,11 @@ export default {
             headers: { 'authorization': apiKey }
           });
           const statusData = await statusRes.json();
+
+          const responseJsonStr = JSON.stringify(statusData);
+          const responseByteSize = new Blob([responseJsonStr]).size;
+          this.apiResponseSize = responseByteSize;
+
           if (statusData.status === 'completed') {
             textResult = statusData.text;
             done = true;
@@ -264,5 +277,64 @@ export default {
   font-size: 1.35em;
   color: inherit;
 }
+
+.audio-size-box {
+  background: #f7fbf8;
+  border-radius: 8px;
+  margin: 9px auto 17px auto;
+  padding: 8px 19px 8px 19px;
+  font-size: 1.15em;
+  box-shadow: 0 1px 7px 0 rgba(40,120,60,.06);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: max-content;
+  color: #246b37;
+  border-left: 5px solid #2ab93b;
+}
+.size-item {
+  font-weight: 500;
+  color: #11497e;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+.size-label {
+  font-size: 0.96em;
+  color: #3a8f4a;
+  font-weight: 400;
+  margin-left: 2px;
+}
+.api-response-size-box {
+  background: #f5f7fa;
+  border-radius: 8px;
+  margin: 14px auto 8px auto;
+  padding: 9px 28px 9px 18px;
+  font-size: 1.10em;
+  box-shadow: 0 1px 6px 0 rgba(50,80,140,.06);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: max-content;
+  color: #24437a;
+  border-left: 5px solid #308dce;
+}
+.api-response-size-box b {
+  font-weight: 600;
+  color: #2065a9;
+  margin-right: 7px;
+}
+.size-item {
+  font-weight: 500;
+  color: #235e9a;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+.size-label {
+  font-size: 0.97em;
+  color: #567fb5;
+  font-weight: 400;
+  margin-left: 2px;
+}
+
 
 </style>
