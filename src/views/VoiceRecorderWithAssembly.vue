@@ -18,6 +18,12 @@
     </div>
     <br />
     <br />
+    <div v-if="audioBlob" class="audio-size-box">
+      <b>Audio file size:</b>
+      <span class="size-item">{{ audioBlob.size }} <span class="size-label">bytes</span></span> /
+      <span class="size-item">{{ (audioBlob.size / 1024).toFixed(1) }} <span class="size-label">KB</span></span> /
+      <span class="size-item">{{ (audioBlob.size / 1024 / 1024).toFixed(2) }} <span class="size-label">MB</span></span>
+    </div>
     <div v-if="error" style="color: red; margin-top: 10px">{{ error }}</div>
   </div>
 </template>
@@ -38,6 +44,7 @@ export default {
   },
   methods: {
     startRecording() {
+      this.audioBlob = null;
       this.error = '';
       this.audioUrl = '';
       this.recognizedText = '';
@@ -154,5 +161,31 @@ export default {
 @keyframes spin {
   0% { transform: rotate(0deg);}
   100% { transform: rotate(360deg);}
+}
+
+.audio-size-box {
+  background: #f8fafb;
+  border-radius: 7px;
+  margin: 16px auto 8px auto;
+  padding: 9px 17px 9px 17px;
+  font-size: 1.09em;
+  box-shadow: 0 1px 6px 0 rgba(50,80,140,.07);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: max-content;
+  color: #24437a;
+}
+.size-item {
+  font-weight: 500;
+  color: #11497e;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+.size-label {
+  font-size: 0.96em;
+  color: #5377a8;
+  font-weight: 400;
+  margin-left: 2px;
 }
 </style>
