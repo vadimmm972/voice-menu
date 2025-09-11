@@ -32,14 +32,11 @@ export default {
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
 
-<TalkingReply
-  :videoSrc="require('./assets/avatar_2.mp4')"
-  :posterSrc="require('./assets/avatar.png')"
-  lang="en-US"
-/>
-
-
-
+    <TalkingReply
+      :videoSrc="currentAvatar.video"
+      :posterSrc="currentAvatar.poster"
+      lang="en-US"
+    />
   </div>
 </template>
 
@@ -48,10 +45,44 @@ import TalkingReply from './views/TalkingReply.vue';
 
 export default {
   name: 'App',
-  components: {
-    TalkingReply
-  }
-}
+  components: { TalkingReply },
+  data() {
+    return {
+      avatars: [
+        {
+          video: require("./assets/avatar_1.mp4"),
+          poster: require("./assets/avatar.png"),
+        },
+        {
+          video: require("./assets/avatar_1.mp4"),
+          poster: require("./assets/avatar.png"),
+        },
+        {
+          video: require("./assets/avatar_2.mp4"),
+          poster: require("./assets/avatar.png"),
+        },
+        {
+          video: require("./assets/avatar_3.mp4"),
+          poster: require("./assets/avatar.png"),
+        },
+        {
+          video: require("./assets/avatar_4.mp4"),
+          poster: require("./assets/avatar.png"),
+        },
+      ],
+      currentAvatar: null,
+    };
+  },
+  created() {
+    this.pickRandomAvatar();
+  },
+  methods: {
+    pickRandomAvatar() {
+      const index = Math.floor(Math.random() * this.avatars.length);
+      this.currentAvatar = this.avatars[index];
+    },
+  },
+};
 </script>
 
 <style>
@@ -63,4 +94,5 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
-</style>
+</style> 
+
